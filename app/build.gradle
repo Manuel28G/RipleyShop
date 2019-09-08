@@ -5,7 +5,7 @@ android {
     buildToolsVersion "29.0.0"
     defaultConfig {
         applicationId "cl.com.ripley.ripleyshop"
-        minSdkVersion 15
+        minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -15,6 +15,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    android {
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
         }
     }
 }
@@ -27,4 +33,16 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    //Libreria usada para redondear los bordes de las imagenes 07/09/19
+    implementation 'de.hdodenhof:circleimageview:3.0.1'
+    //Libreria para realizar conexiones a backend 08/09/2019
+    implementation 'com.squareup.retrofit2:retrofit:2.6.1'
+    //Libreria usada para realizar el bind de los componentes
+    implementation 'com.jakewharton:butterknife:10.1.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
+    //Libreria que permite a retrofit serializar/deserializar los objetos usando GSON
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.1'
+
+
+
 }
