@@ -5,4 +5,15 @@
         <item name="windowNoTitle">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
+
+
+    <!--Estilos asociados a la aplicación-->
+    <style name="RipleySimpleText">
+        <item name="android:fontFamily">@font/Barlow-Medium</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="RipleyPriceAccent">
+        <item name="android:fontFamily">@font/Barlow-Bold</item>\>
+        <item name="android:textColor">@color/priceAccent</item>
+    </style>
 </resources>
