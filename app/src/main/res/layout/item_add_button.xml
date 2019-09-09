@@ -2,7 +2,7 @@
 <Button xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="43dp"
+    android:layout_height="53dp"
     android:layout_marginRight="17dp"
     android:layout_marginLeft="19dp"
     android:backgroundTint="@color/addButton"
