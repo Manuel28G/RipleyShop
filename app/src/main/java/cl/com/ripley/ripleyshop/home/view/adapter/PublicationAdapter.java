@@ -1,6 +1,7 @@
 package cl.com.ripley.ripleyshop.home.view.adapter;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cl.com.ripley.ripleyshop.R;
 import cl.com.ripley.ripleyshop.home.model.HomeProduct;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 import static cl.com.ripley.ripleyshop.general.model.Constants.HTTPS;
 
@@ -56,7 +57,9 @@ public class PublicationAdapter extends RecyclerView.Adapter<PublicationAdapter.
 
         holder.price.setText(product.getPrices().getFormattedOfferPrice());
         holder.oldPrice.setText(product.getPrices().getFormattedListPrice());
+        holder.oldPrice.setPaintFlags( holder.oldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         holder.title.setText(product.getName());
+        holder.moreAction();
     }
 
     @Override
@@ -77,9 +80,25 @@ public class PublicationAdapter extends RecyclerView.Adapter<PublicationAdapter.
         @BindView(R.id.txtview_price)
         TextView price;
 
+        private String description;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
+
+        public void moreAction(){
+            description = title.getText().toString();
+            if(title.getText().toString().length() > 19) {
+                String tmp = title.getText().toString().substring(0,19);
+                title.setText(tmp + "...more");
+            }
+        }
+
+        @OnClick(R.id.txtview_title_card)
+        public void onClickTitle(){
+            title.setText(description);
+        }
+
     }
 }
