@@ -18,6 +18,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
 import android.widget.GridView;
@@ -25,8 +28,13 @@ import android.widget.GridView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cl.com.ripley.ripleyshop.R;
+import cl.com.ripley.ripleyshop.general.model.GridSpaceDecoration;
+import cl.com.ripley.ripleyshop.general.model.UtilHelper;
 import cl.com.ripley.ripleyshop.home.presenter.Home;
 import cl.com.ripley.ripleyshop.home.presenter.HomePresenter;
+import cl.com.ripley.ripleyshop.home.view.adapter.PublicationAdapter;
+
+import static java.security.AccessController.getContext;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener , Home.View{
@@ -38,7 +46,9 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.cardview_home)
-    GridView gridView;
+    RecyclerView myRecyclerView;
+
+    private PublicationAdapter publicationAdapter;
 
     private HomePresenter homePresenter;
 
@@ -47,14 +57,24 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        creatingRecyclerView();
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-        homePresenter = new HomePresenter();
+        homePresenter = new HomePresenter(getApplicationContext());
         homePresenter.getItems();
+    }
+
+    private void creatingRecyclerView(){
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
+        myRecyclerView.setLayoutManager(mLayoutManager);
+        publicationAdapter = new PublicationAdapter(getApplicationContext());
+        myRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        myRecyclerView.addItemDecoration(new GridSpaceDecoration(2, UtilHelper.dpToPx(10,getResources()), true));
+        myRecyclerView.setAdapter(publicationAdapter);
     }
 
     @Override
