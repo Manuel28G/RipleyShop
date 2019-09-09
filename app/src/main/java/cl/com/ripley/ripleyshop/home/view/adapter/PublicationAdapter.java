@@ -2,12 +2,14 @@ package cl.com.ripley.ripleyshop.home.view.adapter;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
@@ -17,11 +19,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cl.com.ripley.ripleyshop.R;
+import cl.com.ripley.ripleyshop.general.model.UtilHelper;
 import cl.com.ripley.ripleyshop.general.view.fragment.ManagementFragment;
 import cl.com.ripley.ripleyshop.home.model.HomeProduct;
 import cl.com.ripley.ripleyshop.product.view.fragment.ProductDetailFragment;
-
 import static cl.com.ripley.ripleyshop.general.model.Constants.HTTPS;
+import static cl.com.ripley.ripleyshop.general.model.Constants.PUBLICATION_ID;
 
 public class PublicationAdapter extends RecyclerView.Adapter<PublicationAdapter.ViewHolder> {
 
@@ -63,8 +66,9 @@ public class PublicationAdapter extends RecyclerView.Adapter<PublicationAdapter.
 
         holder.price.setText(product.getPrices().getFormattedOfferPrice());
         holder.oldPrice.setText(product.getPrices().getFormattedListPrice());
-        holder.oldPrice.setPaintFlags( holder.oldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        holder.oldPrice.setPaintFlags(holder.oldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         holder.title.setText(product.getName());
+        holder.product = product;
         holder.moreAction();
     }
 
@@ -86,6 +90,7 @@ public class PublicationAdapter extends RecyclerView.Adapter<PublicationAdapter.
         @BindView(R.id.txtview_price)
         TextView price;
 
+        public HomeProduct product;
         private String description;
         private FragmentManager mManager;
 
@@ -110,7 +115,11 @@ public class PublicationAdapter extends RecyclerView.Adapter<PublicationAdapter.
 
         @OnClick(R.id.img_card)
         public void onClickImage(){
-            ManagementFragment.getInstance().replaceFragment(new ProductDetailFragment(),TAG,mManager);
+            Fragment fragment = new ProductDetailFragment();
+            Bundle args = new Bundle();
+            args.putString(PUBLICATION_ID, UtilHelper.parseObjectToJsonString(product));
+            fragment.setArguments(args);
+            ManagementFragment.getInstance().replaceFragment(fragment,TAG,mManager);
         }
 
     }
