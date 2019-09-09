@@ -25,4 +25,5 @@
     <string name="menu_furniture_and_home">Muebles y hogar</string>
     <string name="menu_woman_fashion">Moda mujer</string>
     <string name="menu_sport_and_adventure">Deporte y aventura</string>
+    <string name="filters">Filtros</string>
 </resources>
