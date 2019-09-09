@@ -1,4 +1,4 @@
-package cl.com.ripley.ripleyshop;
+package cl.com.ripley.ripleyshop.home.view.activity;
 
 import android.os.Bundle;
 
@@ -18,38 +18,71 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
+import android.widget.GridView;
+import android.widget.Toast;
+
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import cl.com.ripley.ripleyshop.R;
+import cl.com.ripley.ripleyshop.general.model.GridSpaceDecoration;
+import cl.com.ripley.ripleyshop.general.model.UtilHelper;
+import cl.com.ripley.ripleyshop.home.model.HomeProduct;
+import cl.com.ripley.ripleyshop.home.presenter.Home;
+import cl.com.ripley.ripleyshop.home.presenter.HomePresenter;
+import cl.com.ripley.ripleyshop.home.view.adapter.PublicationAdapter;
+
+import static java.security.AccessController.getContext;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener , Home.View{
+
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawer;
+    @BindView(R.id.nav_view)
+    NavigationView navigationView;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.cardview_home)
+    RecyclerView myRecyclerView;
+
+    private PublicationAdapter publicationAdapter;
+
+    private HomePresenter homePresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
+        creatingRecyclerView();
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+        homePresenter = new HomePresenter(getApplicationContext(),this);
+        homePresenter.getItems();
+    }
+
+    private void creatingRecyclerView(){
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
+        myRecyclerView.setLayoutManager(mLayoutManager);
+        publicationAdapter = new PublicationAdapter(getApplicationContext());
+        myRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        myRecyclerView.addItemDecoration(new GridSpaceDecoration(2, UtilHelper.dpToPx(10,getResources()), true));
+        myRecyclerView.setAdapter(publicationAdapter);
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -99,8 +132,23 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void addProducts(List<HomeProduct> products) {
+        publicationAdapter.addProducts(products);
+        publicationAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showErrorConsultingSKU() {
+        Toast.makeText(getApplicationContext(),R.string.error_ep_sku,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showErrorConsultingPublications() {
+        Toast.makeText(getApplicationContext(),R.string.error_ep_products,Toast.LENGTH_SHORT).show();
     }
 }
