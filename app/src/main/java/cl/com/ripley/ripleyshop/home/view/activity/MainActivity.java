@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity
     private void creatingRecyclerView(){
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
         myRecyclerView.setLayoutManager(mLayoutManager);
-        publicationAdapter = new PublicationAdapter(getApplicationContext());
+        publicationAdapter = new PublicationAdapter(getApplicationContext(), getSupportFragmentManager());
         myRecyclerView.setItemAnimator(new DefaultItemAnimator());
         myRecyclerView.addItemDecoration(new GridSpaceDecoration(2, UtilHelper.dpToPx(10,getResources()), true));
         myRecyclerView.setAdapter(publicationAdapter);

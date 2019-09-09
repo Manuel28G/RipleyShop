@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import java.util.ArrayList;
@@ -16,18 +17,23 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cl.com.ripley.ripleyshop.R;
+import cl.com.ripley.ripleyshop.general.view.fragment.ManagementFragment;
 import cl.com.ripley.ripleyshop.home.model.HomeProduct;
+import cl.com.ripley.ripleyshop.product.view.fragment.ProductDetailFragment;
 
 import static cl.com.ripley.ripleyshop.general.model.Constants.HTTPS;
 
 public class PublicationAdapter extends RecyclerView.Adapter<PublicationAdapter.ViewHolder> {
 
     private Context mContext;
+    private FragmentManager mManager;
     private List<HomeProduct> mProductList;
     private View mView;
+    private static final String TAG = PublicationAdapter.class.toString();
 
-    public PublicationAdapter(Context context){
+    public PublicationAdapter(Context context, FragmentManager manager){
         mContext = context;
+        mManager = manager;
         mProductList = new ArrayList<>();
     }
 
@@ -44,7 +50,7 @@ public class PublicationAdapter extends RecyclerView.Adapter<PublicationAdapter.
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         mView = LayoutInflater.from(mContext).inflate(R.layout.item_card, parent, false);
-        return new ViewHolder(mView);
+        return new ViewHolder(mView,mManager);
     }
 
     @Override
@@ -81,9 +87,11 @@ public class PublicationAdapter extends RecyclerView.Adapter<PublicationAdapter.
         TextView price;
 
         private String description;
+        private FragmentManager mManager;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, FragmentManager manager) {
             super(itemView);
+            mManager = manager;
             ButterKnife.bind(this,itemView);
         }
 
@@ -98,6 +106,11 @@ public class PublicationAdapter extends RecyclerView.Adapter<PublicationAdapter.
         @OnClick(R.id.txtview_title_card)
         public void onClickTitle(){
             title.setText(description);
+        }
+
+        @OnClick(R.id.img_card)
+        public void onClickImage(){
+            ManagementFragment.getInstance().replaceFragment(new ProductDetailFragment(),TAG,mManager);
         }
 
     }
