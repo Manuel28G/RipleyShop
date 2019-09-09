@@ -62,11 +62,11 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         creatingRecyclerView();
-        setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+        toolbar.setNavigationIcon(R.drawable.ic_options_menu);
         navigationView.setNavigationItemSelectedListener(this);
         homePresenter = new HomePresenter(getApplicationContext(),this);
         homePresenter.getItems();
