@@ -24,12 +24,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
 import android.widget.GridView;
+import android.widget.Toast;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cl.com.ripley.ripleyshop.R;
 import cl.com.ripley.ripleyshop.general.model.GridSpaceDecoration;
 import cl.com.ripley.ripleyshop.general.model.UtilHelper;
+import cl.com.ripley.ripleyshop.home.model.HomeProduct;
 import cl.com.ripley.ripleyshop.home.presenter.Home;
 import cl.com.ripley.ripleyshop.home.presenter.HomePresenter;
 import cl.com.ripley.ripleyshop.home.view.adapter.PublicationAdapter;
@@ -64,7 +68,7 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-        homePresenter = new HomePresenter(getApplicationContext());
+        homePresenter = new HomePresenter(getApplicationContext(),this);
         homePresenter.getItems();
     }
 
@@ -130,5 +134,21 @@ public class MainActivity extends AppCompatActivity
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void addProducts(List<HomeProduct> products) {
+        publicationAdapter.addProducts(products);
+        publicationAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showErrorConsultingSKU() {
+        Toast.makeText(getApplicationContext(),R.string.error_ep_sku,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showErrorConsultingPublications() {
+        Toast.makeText(getApplicationContext(),R.string.error_ep_products,Toast.LENGTH_SHORT).show();
     }
 }

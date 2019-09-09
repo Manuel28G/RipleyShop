@@ -8,7 +8,9 @@ import cl.com.ripley.ripleyshop.home.model.HomeProduct;
 public interface Home {
 
     public interface  View{
-
+        void addProducts(List<HomeProduct> products);
+        void showErrorConsultingSKU();
+        void showErrorConsultingPublications();
     }
 
     public interface Interactor{
@@ -16,10 +18,8 @@ public interface Home {
     }
 
     public  interface Presenter{
-
         void addSKUS(String listSKU);
-
         void addPublications(List<HomeProduct> products);
-
+        void errorConnection(String tag);
     }
 }

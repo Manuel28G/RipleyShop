@@ -11,10 +11,12 @@ public class HomePresenter implements Home.Presenter {
     private HomeItems homeItemInteractor;
     private SKU skuInteractor;
     private Context mCtx;
+    private Home.View mView;
 
-    public HomePresenter(Context ctx){
+    public HomePresenter(Context ctx, Home.View view){
         mCtx = ctx;
-        homeItemInteractor = new HomeItems();
+        mView = view;
+        homeItemInteractor = new HomeItems(this);
         skuInteractor = new SKU(mCtx,this);
     }
 
@@ -35,6 +37,14 @@ public class HomePresenter implements Home.Presenter {
 
     @Override
     public void addPublications(List<HomeProduct> products) {
+            mView.addProducts(products);
+    }
 
+    @Override
+    public void errorConnection(String tag) {
+        if(tag.equals(skuInteractor.TAG))
+            mView.showErrorConsultingSKU();
+        else if(tag.equals(homeItemInteractor.TAG))
+            mView.showErrorConsultingPublications();
     }
 }

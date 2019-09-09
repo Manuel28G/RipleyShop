@@ -6,7 +6,8 @@
     android:layout_marginRight="12dp"
     android:layout_marginLeft="12dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
+        android:elevation="2dp"
         android:id="@+id/img_card"
         android:layout_width="152dp"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -14,7 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:civ_border_width="2dp"
+        android:foreground="@drawable/rounded_corners"
         android:src="@drawable/side_nav_bar" />
     <TextView
         android:id="@+id/txtview_title_card"

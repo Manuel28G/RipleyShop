@@ -10,6 +10,7 @@ public class SKU {
 
     private Context mCtx;
     private Home.Presenter mPresenter;
+    public static final String TAG = SKU.class.toString();
 
     public SKU(Context ctx, Home.Presenter presenter){
         mCtx = ctx;

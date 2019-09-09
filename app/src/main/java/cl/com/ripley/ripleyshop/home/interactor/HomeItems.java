@@ -1,7 +1,5 @@
 package cl.com.ripley.ripleyshop.home.interactor;
 
-import android.util.Log;
-
 import java.util.List;
 
 import cl.com.ripley.ripleyshop.general.model.RetrofitHelper;
@@ -19,25 +17,27 @@ import static cl.com.ripley.ripleyshop.general.model.Constants.EP_GET_PRODUCT_IN
 
 public class HomeItems implements Home.Interactor {
 
-    RetrofitHelper helper;
+    private RetrofitHelper mHelper;
+    private Home.Presenter mPresenter;
+    public static final String TAG = HomeItems.class.toString();
 
-    public HomeItems(){
-        helper = RetrofitHelper.getInstance(EP_GET_PRODUCT_INFO);
-
+    public HomeItems(Home.Presenter presenter){
+        mHelper = RetrofitHelper.getInstance(EP_GET_PRODUCT_INFO);
+        mPresenter = presenter;
     }
 
     @Override
     public void getItemsInformation(String SkU) {
-       Products products = helper.callEP(Products.class);
+       Products products = mHelper.callEP(Products.class);
        products.getProducts(SkU).enqueue(new Callback<List<HomeProduct>>() {
            @Override
            public void onResponse(Call<List<HomeProduct>> call, Response<List<HomeProduct>> response) {
-
+               mPresenter.addPublications(response.body());
            }
 
            @Override
            public void onFailure(Call<List<HomeProduct>> call, Throwable t) {
-
+                mPresenter.errorConnection(TAG);
            }
        });
     }
