@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="12dp"
+    android:layout_marginLeft="12dp">
+
+    <ImageView
+        android:elevation="2dp"
+        android:id="@+id/img_card"
+        android:layout_width="152dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_height="205dp"
+        android:background="@drawable/rounded_corners"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/side_nav_bar" />
+    <TextView
+        android:id="@+id/txtview_title_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/RipleySimpleText"
+        android:layout_marginTop="11dp"
+        android:text="Blusa Brigitte Naux"
+        android:textSize="18dp"
+        app:layout_constraintLeft_toLeftOf="@id/img_card"
+        app:layout_constraintRight_toRightOf="@id/img_card"
+        app:layout_constraintTop_toBottomOf="@id/img_card" />
+
+    <TextView
+        android:id="@+id/txtview_last_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/RipleySimpleText"
+        app:layout_constraintLeft_toLeftOf="@+id/txtview_title_card"
+        app:layout_constraintTop_toBottomOf="@+id/txtview_title_card"
+        android:textSize="14dp"
+        android:text="$14.990"
+        />
+    <ImageView
+        android:id="@+id/imgview_replay_icon_shop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_grupo_2070"
+        android:layout_marginTop="4dp"
+        app:layout_constraintLeft_toLeftOf="@+id/txtview_last_price"
+        app:layout_constraintTop_toBottomOf="@id/txtview_last_price"/>
+
+    <TextView
+        android:id="@+id/txtview_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="$14.990"
+        app:layout_constraintLeft_toRightOf="@+id/imgview_replay_icon_shop"
+        app:layout_constraintBottom_toBottomOf="@id/imgview_replay_icon_shop"
+        android:layout_marginLeft="3.4dp"
+        android:textSize="14dp"
+        style="@style/RipleyPriceAccent"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>
