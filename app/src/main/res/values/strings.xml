@@ -16,4 +16,5 @@
 
     <string name="error_ep_sku">Error de conexión</string>
     <string name="error_ep_products">Error de conexión</string>
+    <string name="specifications">Especificaciones</string>
 </resources>
