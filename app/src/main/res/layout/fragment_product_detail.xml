@@ -16,6 +16,7 @@
         app:fillColor="@color/addButton"
         app:radius="4dp"
         app:strokeWidth="1dp"
+        android:scaleType="fitCenter"
         app:pageColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="486dp"
