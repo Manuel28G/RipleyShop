@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <com.synnapps.carouselview.CarouselView
         android:id="@+id/carouselView"
@@ -33,5 +36,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </androidx.recyclerview.widget.RecyclerView>
+        <include layout="@layout/item_total_price"/>
+        <include
+            android:id="@+id/bt_add_to_car"
+            layout="@layout/item_add_button"/>
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
