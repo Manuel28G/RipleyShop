@@ -2,9 +2,6 @@ package cl.com.ripley.ripleyshop.home.view.activity;
 
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import android.view.View;
 
 import androidx.core.view.GravityCompat;
@@ -23,24 +20,25 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cl.com.ripley.ripleyshop.R;
+import cl.com.ripley.ripleyshop.cart.view.fragment.CartFragment;
 import cl.com.ripley.ripleyshop.general.model.GridSpaceDecoration;
 import cl.com.ripley.ripleyshop.general.model.UtilHelper;
+import cl.com.ripley.ripleyshop.general.view.fragment.ManagementFragment;
 import cl.com.ripley.ripleyshop.home.model.HomeProduct;
 import cl.com.ripley.ripleyshop.home.presenter.Home;
 import cl.com.ripley.ripleyshop.home.presenter.HomePresenter;
 import cl.com.ripley.ripleyshop.home.view.adapter.PublicationAdapter;
-
-import static java.security.AccessController.getContext;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener , Home.View{
@@ -57,12 +55,16 @@ public class MainActivity extends AppCompatActivity
     ImageView ripleyIcon;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
-
+    @BindView(R.id.imgview_icon_shop)
+    ImageView imgViewCart;
+    @BindView(R.id.txtview_title)
+    TextView titleMenu;
     private PublicationAdapter publicationAdapter;
 
     private HomePresenter homePresenter;
     private ActionBarDrawerToggle toggle;
     private boolean mToolBarNavigationListenerIsRegistered = false;
+    public final String TAG = MainActivity.class.toString();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +78,7 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        enableViews(false);
+        enableViews(false,true);
         navigationView.setNavigationItemSelectedListener(this);
         homePresenter = new HomePresenter(getApplicationContext(),this);
         homePresenter.getItems();
@@ -99,7 +101,7 @@ public class MainActivity extends AppCompatActivity
      * Metodo que cambia el menú superior cambiando la opcion lateral por un back
      * @param enable true: coloca la opcion de regresar en el menu superior, false: coloca la opción del menú lateral
      */
-    public void enableViews(boolean enable) {
+    public void enableViews(boolean enable,boolean isbackAction) {
         if(enable) {
             drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             toggle.setDrawerIndicatorEnabled(false);
@@ -107,13 +109,22 @@ public class MainActivity extends AppCompatActivity
             if(!mToolBarNavigationListenerIsRegistered) {
                 toggle.setToolbarNavigationClickListener(v -> {
                     onBackPressed();
-                    enableViews(false);
+                    enableViews(false,isbackAction);
                 });
                 mToolBarNavigationListenerIsRegistered = true;
                 ripleyIcon.setVisibility(View.INVISIBLE);
-                toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+                if(isbackAction) {
+                    toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+                }
+                else{
+                    titleMenu.setVisibility(View.VISIBLE);
+                    toolbar.setNavigationIcon(R.drawable.ic_expand_close);
+                }
+
             }
         } else {
+
+            titleMenu.setVisibility(View.GONE);
             drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             toggle.setDrawerIndicatorEnabled(true);
@@ -122,6 +133,13 @@ public class MainActivity extends AppCompatActivity
             ripleyIcon.setVisibility(View.VISIBLE);
             toolbar.setNavigationIcon(R.drawable.ic_options_menu);
         }
+    }
+
+    @OnClick(R.id.imgview_icon_shop)
+    public void onClickCart(){
+        ManagementFragment.getInstance().replaceFragment(new CartFragment(),TAG,getSupportFragmentManager());
+        titleMenu.setText(getResources().getString(R.string.title_cart));
+        enableViews(true,false);
     }
 
     @Override

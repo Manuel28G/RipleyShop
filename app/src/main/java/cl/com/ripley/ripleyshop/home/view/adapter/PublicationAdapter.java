@@ -144,7 +144,7 @@ public class PublicationAdapter extends RecyclerView.Adapter<PublicationAdapter.
             args.putString(PUBLICATION_ID, UtilHelper.parseObjectToJsonString(product));
             fragment.setArguments(args);
             ManagementFragment.getInstance().replaceFragment(fragment,TAG,mManager);
-            ((MainActivity)mContext).enableViews(true);
+            ((MainActivity)mContext).enableViews(true,true);
         }
 
     }

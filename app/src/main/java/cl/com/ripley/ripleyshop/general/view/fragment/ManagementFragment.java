@@ -21,7 +21,7 @@ public class ManagementFragment {
     }
 
     public void replaceFragment(Fragment mFragment, String mTag, FragmentManager manager) {
-        FragmentTransaction transaction=manager.beginTransaction();//create an instance of Fragment-transaction
+        FragmentTransaction transaction=manager.beginTransaction();
         transaction.addToBackStack(mTag);
         transaction.replace(FRAME_ID, mFragment, mTag);
         transaction.commitAllowingStateLoss();

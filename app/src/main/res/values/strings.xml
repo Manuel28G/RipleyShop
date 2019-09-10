@@ -18,6 +18,8 @@
     <string name="error_ep_products">Error de conexión</string>
     <!--Detail publication-->
     <string name="specifications">Especificaciones</string>
-    <string name="addButton">agregar a la bolsa</string>
-
+    <string name="add_button">agregar a la bolsa</string>
+    <!--Shoping Cart-->
+    <string name="empty_cart">Tu bolsa está vacía</string>
+    <string name="title_cart">Mi bolsa</string>
 </resources>
