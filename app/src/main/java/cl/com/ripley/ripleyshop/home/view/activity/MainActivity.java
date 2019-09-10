@@ -96,7 +96,6 @@ public class MainActivity extends AppCompatActivity
         myRecyclerView.setAdapter(publicationAdapter);
     }
 
-
     /**
      * Metodo que cambia el menú superior cambiando la opcion lateral por un back
      * @param enable true: coloca la opcion de regresar en el menu superior, false: coloca la opción del menú lateral
@@ -147,6 +146,7 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            enableViews(false,false);
             super.onBackPressed();
         }
     }
