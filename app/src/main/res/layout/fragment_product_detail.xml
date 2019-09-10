@@ -11,6 +11,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        app:layout_constraintLeft_toLeftOf="@id/carouselView"
+        app:layout_constraintRight_toRightOf="@id/carouselView"
+        app:layout_constraintTop_toTopOf="@id/carouselView"
+        app:layout_constraintBottom_toBottomOf="@id/carouselView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
     <com.synnapps.carouselview.CarouselView
         android:id="@+id/carouselView"
         app:fillColor="@color/addButton"

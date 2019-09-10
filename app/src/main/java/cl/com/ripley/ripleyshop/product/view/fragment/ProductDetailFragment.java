@@ -1,11 +1,13 @@
 package cl.com.ripley.ripleyshop.product.view.fragment;
 
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +17,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestFutureTarget;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.synnapps.carouselview.CarouselView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,6 +47,8 @@ public class ProductDetailFragment extends Fragment {
     RecyclerView recyclerView;
     private HomeProduct mProduct;
     private InformationAdapter mInformationAdapter;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,7 +83,21 @@ public class ProductDetailFragment extends Fragment {
         carouselView.setImageListener((position, imageView) ->
                 Glide.with(getContext())
                         .load(HTTPS+mProduct.getImage(position))
-                        .centerInside()
+                        .addListener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+
+                                progressBar.setVisibility(View.GONE);
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                progressBar.setVisibility(View.GONE);
+                                return false;
+                            }
+                        })
+                        .fitCenter()
                         .into(imageView));
     }
 
