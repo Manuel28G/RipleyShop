@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        app:layout_constraintLeft_toLeftOf="@id/carouselView"
+        app:layout_constraintRight_toRightOf="@id/carouselView"
+        app:layout_constraintTop_toTopOf="@id/carouselView"
+        app:layout_constraintBottom_toBottomOf="@id/carouselView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <com.synnapps.carouselview.CarouselView
+        android:id="@+id/carouselView"
+        app:fillColor="@color/addButton"
+        app:radius="4dp"
+        app:strokeWidth="1dp"
+        android:scaleType="fitCenter"
+        app:pageColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="486dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linlay_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/carouselView">
+        <TextView
+            android:layout_marginLeft="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/SpecificationTitle"
+            android:layout_marginBottom="18dp"
+            android:text="@string/specifications"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recview_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </androidx.recyclerview.widget.RecyclerView>
+        <include layout="@layout/item_total_price"/>
+        <include
+            android:id="@+id/bt_add_to_car"
+            layout="@layout/item_add_button"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

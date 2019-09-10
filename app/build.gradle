@@ -44,6 +44,10 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.6.1'
     //Libreria que permite facilitar el manejo de imagenes en memoria.
     implementation 'com.github.bumptech.glide:glide:4.9.0'
+    //Libreria para el manejo del disenio del carrusel de fotos// https://mvnrepository.com/artifact/com.synnapps/carouselview
+    implementation 'com.synnapps:carouselview:0.1.6'
+    // Libreria para parsear objetos
+    implementation 'com.google.code.gson:gson:2.8.5'
 
 
 

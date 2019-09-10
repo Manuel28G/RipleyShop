@@ -24,6 +24,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.List;
@@ -51,10 +53,16 @@ public class MainActivity extends AppCompatActivity
     Toolbar toolbar;
     @BindView(R.id.cardview_home)
     RecyclerView myRecyclerView;
+    @BindView(R.id.imgview_letter_ripley)
+    ImageView ripleyIcon;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
 
     private PublicationAdapter publicationAdapter;
 
     private HomePresenter homePresenter;
+    private ActionBarDrawerToggle toggle;
+    private boolean mToolBarNavigationListenerIsRegistered = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,23 +70,58 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         creatingRecyclerView();
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        toolbar.setNavigationIcon(R.drawable.ic_options_menu);
+        enableViews(false);
         navigationView.setNavigationItemSelectedListener(this);
         homePresenter = new HomePresenter(getApplicationContext(),this);
         homePresenter.getItems();
     }
 
+    /**
+     * Método que crea el Recyclerview en forma de dos columnas
+     */
     private void creatingRecyclerView(){
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
         myRecyclerView.setLayoutManager(mLayoutManager);
-        publicationAdapter = new PublicationAdapter(getApplicationContext());
+        publicationAdapter = new PublicationAdapter(this, getSupportFragmentManager());
         myRecyclerView.setItemAnimator(new DefaultItemAnimator());
         myRecyclerView.addItemDecoration(new GridSpaceDecoration(2, UtilHelper.dpToPx(10,getResources()), true));
         myRecyclerView.setAdapter(publicationAdapter);
+    }
+
+
+    /**
+     * Metodo que cambia el menú superior cambiando la opcion lateral por un back
+     * @param enable true: coloca la opcion de regresar en el menu superior, false: coloca la opción del menú lateral
+     */
+    public void enableViews(boolean enable) {
+        if(enable) {
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            toggle.setDrawerIndicatorEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            if(!mToolBarNavigationListenerIsRegistered) {
+                toggle.setToolbarNavigationClickListener(v -> {
+                    onBackPressed();
+                    enableViews(false);
+                });
+                mToolBarNavigationListenerIsRegistered = true;
+                ripleyIcon.setVisibility(View.INVISIBLE);
+                toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+            }
+        } else {
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            toggle.setDrawerIndicatorEnabled(true);
+            toggle.setToolbarNavigationClickListener(null);
+            mToolBarNavigationListenerIsRegistered = false;
+            ripleyIcon.setVisibility(View.VISIBLE);
+            toolbar.setNavigationIcon(R.drawable.ic_options_menu);
+        }
     }
 
     @Override
@@ -92,34 +135,23 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         if (id == R.id.nav_home) {
-            // Handle the camera action
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
@@ -131,13 +163,13 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_send) {
 
         }
-
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
     @Override
     public void addProducts(List<HomeProduct> products) {
+        progressBar.setVisibility(View.GONE);
         publicationAdapter.addProducts(products);
         publicationAdapter.notifyDataSetChanged();
     }

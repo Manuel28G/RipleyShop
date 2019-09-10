@@ -4,12 +4,17 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.util.Log;
 import android.util.TypedValue;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 public class UtilHelper {
 
     private static final String TAG = UtilHelper.class.toString();
+    private static final Gson sGson = new GsonBuilder().create();
 
     /**
      * Metodo que retorna la lectura de un archivo en memoria desde la carpeta assets de android
@@ -41,5 +46,39 @@ public class UtilHelper {
      */
     public static int dpToPx(int dp, Resources resources) {
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.getDisplayMetrics()));
+    }
+
+    public static String parseObjectToJsonString(Object t){
+        return sGson.toJson(t);
+    }
+
+    public static <T> T  parseJsonToObject(String json, Class<T> _class){
+        return sGson.fromJson(json, _class);
+    }
+
+    /**
+     * Método que convierte un string tipo arreglo en una lista de objetos
+     * @param json json string que se desea pasar
+     * @return lista de objetos
+     */
+    public static <T> T parseJsonToArrayFromArrayJson(String json, final Type type){
+        return sGson.fromJson(json,type);
+    }
+
+    private static Type getType(final Class<?> rawClass,final Class<?> parameter) {
+        return new ParameterizedType() {
+            @Override
+            public Type[] getActualTypeArguments() {
+                return new Type[] {parameter};
+            }
+            @Override
+            public Type getRawType() {
+                return rawClass;
+            }
+            @Override
+            public Type getOwnerType() {
+                return null;
+            }
+        };
     }
 }
