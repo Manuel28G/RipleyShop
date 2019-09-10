@@ -65,6 +65,8 @@ public class MainActivity extends AppCompatActivity
     private ActionBarDrawerToggle toggle;
     private boolean mToolBarNavigationListenerIsRegistered = false;
     public final String TAG = MainActivity.class.toString();
+    private static boolean sIsCartInterface;
+    private static int sCountJumps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,7 @@ public class MainActivity extends AppCompatActivity
         creatingRecyclerView();
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        sCountJumps = 1;
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -105,40 +108,46 @@ public class MainActivity extends AppCompatActivity
             drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             toggle.setDrawerIndicatorEnabled(false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            if(!mToolBarNavigationListenerIsRegistered) {
                 toggle.setToolbarNavigationClickListener(v -> {
                     onBackPressed();
-                    enableViews(false,isbackAction);
                 });
                 mToolBarNavigationListenerIsRegistered = true;
                 ripleyIcon.setVisibility(View.INVISIBLE);
                 if(isbackAction) {
+                    sCountJumps ++;
                     toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
                 }
                 else{
+                    sCountJumps ++;
                     titleMenu.setVisibility(View.VISIBLE);
                     toolbar.setNavigationIcon(R.drawable.ic_expand_close);
                 }
-
-            }
         } else {
-
+            sCountJumps--;
             titleMenu.setVisibility(View.GONE);
-            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            toggle.setDrawerIndicatorEnabled(true);
-            toggle.setToolbarNavigationClickListener(null);
-            mToolBarNavigationListenerIsRegistered = false;
-            ripleyIcon.setVisibility(View.VISIBLE);
-            toolbar.setNavigationIcon(R.drawable.ic_options_menu);
+            if(sCountJumps == 0) {
+                drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                toggle.setDrawerIndicatorEnabled(true);
+                toggle.setToolbarNavigationClickListener(null);
+                mToolBarNavigationListenerIsRegistered = false;
+                ripleyIcon.setVisibility(View.VISIBLE);
+                toolbar.setNavigationIcon(R.drawable.ic_options_menu);
+            }
+            else{
+                toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+            }
         }
     }
 
     @OnClick(R.id.imgview_icon_shop)
     public void onClickCart(){
-        ManagementFragment.getInstance().replaceFragment(new CartFragment(),TAG,getSupportFragmentManager());
-        titleMenu.setText(getResources().getString(R.string.title_cart));
-        enableViews(true,false);
+        if(!sIsCartInterface){
+            sIsCartInterface = true;
+            ManagementFragment.getInstance().replaceFragment(new CartFragment(),TAG,getSupportFragmentManager());
+            titleMenu.setText(getResources().getString(R.string.title_cart));
+            enableViews(true,false);
+        }
     }
 
     @Override
@@ -147,6 +156,7 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             enableViews(false,false);
+            sIsCartInterface = false;
             super.onBackPressed();
         }
     }
