@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import butterknife.BindView;
@@ -18,10 +19,12 @@ public class InformationAdapter extends RecyclerView.Adapter<InformationAdapter.
     private List<ProductAttributes> mInformationList;
     private Context mCtx;
     private View mView;
+    private boolean isGray;
 
     public InformationAdapter(Context ctx, List<ProductAttributes> information){
         mInformationList = information;
         mCtx = ctx;
+        isGray = true;
     }
 
     @NonNull
@@ -36,6 +39,12 @@ public class InformationAdapter extends RecyclerView.Adapter<InformationAdapter.
         ProductAttributes tmp = mInformationList.get(position);
         holder.title.setText(tmp.getName());
         holder.value.setText(tmp.getValue());
+        if(isGray)
+            holder.constraintLayout.setBackgroundColor(mCtx.getResources().getColor(R.color.gray));
+        else
+            holder.constraintLayout.setBackgroundColor(mCtx.getResources().getColor(R.color.white));
+
+        isGray = !isGray;
     }
 
     @Override
@@ -49,6 +58,8 @@ public class InformationAdapter extends RecyclerView.Adapter<InformationAdapter.
         TextView value;
         @BindView(R.id.txtview_title)
         TextView title;
+        @BindView(R.id.conslay_container)
+        ConstraintLayout constraintLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

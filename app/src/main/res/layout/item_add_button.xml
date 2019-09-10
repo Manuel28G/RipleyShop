@@ -6,7 +6,7 @@
     android:layout_marginRight="17dp"
     android:layout_marginLeft="19dp"
     android:backgroundTint="@color/addButton"
-    android:textColor="@color/grey"
+    android:textColor="@color/gray"
     android:text="@string/addButton"
     android:fontFamily="@font/barlow_bold"
     android:layout_marginBottom="15dp"
