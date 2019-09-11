@@ -13,7 +13,7 @@ public class GetCartProducts  implements GeneralInteractor {
 
     @Override
     public void run() {
-
+        mGetProduct.setCartProducts(ProductsInMemory.getInstance().getProductList());
     }
 
 }
