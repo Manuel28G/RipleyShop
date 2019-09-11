@@ -2,6 +2,7 @@ package cl.com.ripley.ripleyshop.home.interactor;
 
 import java.util.List;
 
+import cl.com.ripley.ripleyshop.general.model.GeneralInteractor;
 import cl.com.ripley.ripleyshop.general.model.RetrofitHelper;
 import cl.com.ripley.ripleyshop.home.model.Cart;
 import cl.com.ripley.ripleyshop.home.model.HomeProduct;
@@ -15,31 +16,36 @@ import retrofit2.http.Query;
 
 import static cl.com.ripley.ripleyshop.general.model.Constants.EP_GET_PRODUCT_INFO;
 
-public class HomeItems implements Home.Interactor {
+public class HomeItems implements GeneralInteractor {
 
     private RetrofitHelper mHelper;
     private Home.Presenter mPresenter;
     public static final String TAG = HomeItems.class.toString();
+    private String SKU;
 
     public HomeItems(Home.Presenter presenter){
         mHelper = RetrofitHelper.getInstance(EP_GET_PRODUCT_INFO);
         mPresenter = presenter;
     }
 
-    @Override
-    public void getItemsInformation(String SkU) {
-       Products products = mHelper.callEP(Products.class);
-       products.getProducts(SkU).enqueue(new Callback<List<HomeProduct>>() {
-           @Override
-           public void onResponse(Call<List<HomeProduct>> call, Response<List<HomeProduct>> response) {
-               mPresenter.addPublications(response.body());
-           }
+    public void setSKU(String sku){
+        SKU = sku;
+    }
 
-           @Override
-           public void onFailure(Call<List<HomeProduct>> call, Throwable t) {
+    @Override
+    public void run() {
+        Products products = mHelper.callEP(Products.class);
+        products.getProducts(SKU).enqueue(new Callback<List<HomeProduct>>() {
+            @Override
+            public void onResponse(Call<List<HomeProduct>> call, Response<List<HomeProduct>> response) {
+                mPresenter.addPublications(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<HomeProduct>> call, Throwable t) {
                 mPresenter.errorConnection(TAG);
-           }
-       });
+            }
+        });
     }
 
     interface Products {
