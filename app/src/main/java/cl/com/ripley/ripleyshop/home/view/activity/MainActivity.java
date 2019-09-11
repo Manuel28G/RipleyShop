@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        enableViews(false,true);
+        enableViews(false,true,false);
         navigationView.setNavigationItemSelectedListener(this);
         homePresenter = new HomePresenter(getApplicationContext(),this);
         homePresenter.getItems();
@@ -103,7 +103,15 @@ public class MainActivity extends AppCompatActivity
      * Metodo que cambia el menú superior cambiando la opcion lateral por un back
      * @param enable true: coloca la opcion de regresar en el menu superior, false: coloca la opción del menú lateral
      */
-    public void enableViews(boolean enable,boolean isbackAction) {
+    public void enableViews(boolean enable,boolean isbackAction, boolean isCartSection) {
+
+        if(isCartSection){
+            imgViewCart.setVisibility(View.GONE);
+        }
+        else {
+            imgViewCart.setVisibility(View.VISIBLE);
+        }
+
         if(enable) {
             drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             toggle.setDrawerIndicatorEnabled(false);
@@ -146,7 +154,7 @@ public class MainActivity extends AppCompatActivity
             sIsCartInterface = true;
             ManagementFragment.getInstance().replaceFragment(new CartFragment(),TAG,getSupportFragmentManager());
             titleMenu.setText(getResources().getString(R.string.title_cart));
-            enableViews(true,false);
+            enableViews(true,false,true);
         }
     }
 
@@ -155,7 +163,7 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            enableViews(false,false);
+            enableViews(false,false,false);
             sIsCartInterface = false;
             super.onBackPressed();
         }

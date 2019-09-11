@@ -2,7 +2,6 @@ package cl.com.ripley.ripleyshop.cart.view.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -20,10 +19,9 @@ import cl.com.ripley.ripleyshop.R;
 import cl.com.ripley.ripleyshop.cart.presenter.ManageCart;
 import cl.com.ripley.ripleyshop.cart.presenter.ManageCartPresenter;
 import cl.com.ripley.ripleyshop.general.model.GeneralEnum;
-import cl.com.ripley.ripleyshop.general.view.fragment.ManagementFragment;
 import cl.com.ripley.ripleyshop.home.model.HomeProduct;
 
-public class CartFragment extends Fragment implements ManageCart.view {
+public class CartFragment extends Fragment implements ManageCart.ViewCart {
 
 
     private ManageCartPresenter mManageCart;
@@ -37,13 +35,13 @@ public class CartFragment extends Fragment implements ManageCart.view {
     ConstraintLayout constraintLayoutElements;
 
     public CartFragment(){
-
+        mManageCart = new ManageCartPresenter(this, getContext());
     }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_cart,container,false);
+    public android.view.View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        android.view.View view = inflater.inflate(R.layout.fragment_cart,container,false);
         ButterKnife.bind(this,view);
         mManageCart.getCartProducts();
         return view;
@@ -57,15 +55,15 @@ public class CartFragment extends Fragment implements ManageCart.view {
 
     @Override
     public void setCartProducts(List<HomeProduct> homeProductList) {
-        progressBar.setVisibility(View.GONE);
-        constraintLayoutElements.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(android.view.View.GONE);
+        constraintLayoutElements.setVisibility(android.view.View.VISIBLE);
     }
 
     @Override
     public void noProducts() {
-        progressBar.setVisibility(View.GONE);
-        text.setVisibility(View.VISIBLE);
-        image.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(android.view.View.GONE);
+        text.setVisibility(android.view.View.VISIBLE);
+        image.setVisibility(android.view.View.VISIBLE);
     }
 
     @Override

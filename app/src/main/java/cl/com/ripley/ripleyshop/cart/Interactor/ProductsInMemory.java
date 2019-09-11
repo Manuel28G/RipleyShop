@@ -12,7 +12,7 @@ public class ProductsInMemory {
     private static ProductsInMemory sProductInMemory;
 
     private ProductsInMemory(){
-
+        mHomeProductList = new ArrayList<>();
     }
 
     public static ProductsInMemory getInstance(){

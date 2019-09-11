@@ -3,7 +3,7 @@ package cl.com.ripley.ripleyshop.cart.presenter;
 import android.content.Context;
 
 import com.google.gson.reflect.TypeToken;
-import java.lang.reflect.GenericArrayType;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,14 +14,27 @@ import cl.com.ripley.ripleyshop.home.model.HomeProduct;
 public class ManageCartPresenter implements
         ManageCart.GetProduct,
         ManageCart.PayCartProduct,
-        ManageCart.RemoveCartProduct {
+        ManageCart.RemoveCartProduct ,
+ManageCart.AddCartProduct {
 
     private GetCartProducts getCartProducts;
-    private ManageCart.view mView;
+    private cl.com.ripley.ripleyshop.cart.Interactor.AddCartProduct addCartProductsInteractor;
+    private ViewCart mViewCart;
+    private AddPublication mAddPublication;
 
-    public ManageCartPresenter(ManageCart.view view,Context context){
-        mView = view;
+    public ManageCartPresenter(ViewCart viewCart, Context context){
+        mViewCart = viewCart;
         getCartProducts = new GetCartProducts(this);
+    }
+
+    public void addProductToCart(HomeProduct homeProduct){
+        addCartProductsInteractor.setProduct(homeProduct);
+        addCartProductsInteractor.run();
+    }
+
+    public ManageCartPresenter(AddPublication addPublication, Context context){
+        mAddPublication = addPublication;
+        addCartProductsInteractor = new cl.com.ripley.ripleyshop.cart.Interactor.AddCartProduct(this);
     }
 
     public void getCartProducts(){
@@ -38,11 +51,11 @@ public class ManageCartPresenter implements
         Type type = new TypeToken<ArrayList<HomeProduct>>(){}.getType();
         List<HomeProduct> homeProducts = UtilHelper.parseJsonToArrayFromArrayJson(products,type);
         if(homeProducts.isEmpty() || homeProducts.size() ==  0){
-            mView.noProducts();
+            mViewCart.noProducts();
         }
         else
         {
-            mView.setCartProducts(homeProducts);
+            mViewCart.setCartProducts(homeProducts);
         }
     }
 
@@ -64,5 +77,15 @@ public class ManageCartPresenter implements
     @Override
     public void remoceProductError() {
 
+    }
+
+    @Override
+    public void addProductSucess() {
+        mAddPublication.showSucessMessage();
+    }
+
+    @Override
+    public void addProductError() {
+        mAddPublication.showErrorMessage();
     }
 }
