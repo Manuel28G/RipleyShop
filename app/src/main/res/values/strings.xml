@@ -22,4 +22,8 @@
     <!--Shoping Cart-->
     <string name="empty_cart">Tu bolsa está vacía</string>
     <string name="title_cart">Mi bolsa</string>
+
+
+    <string name="add_error">Error agregando producto</string>
+    <string name="add_sucess">Producto agregado</string>
 </resources>
