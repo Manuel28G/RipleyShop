@@ -6,6 +6,7 @@
     android:background="@color/whiteGray">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recview_products"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/conslay_total_section"

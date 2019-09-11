@@ -11,6 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 import butterknife.BindView;
@@ -18,8 +21,12 @@ import butterknife.ButterKnife;
 import cl.com.ripley.ripleyshop.R;
 import cl.com.ripley.ripleyshop.cart.presenter.ManageCart;
 import cl.com.ripley.ripleyshop.cart.presenter.ManageCartPresenter;
+import cl.com.ripley.ripleyshop.cart.view.Adapter.ProductAdapter;
 import cl.com.ripley.ripleyshop.general.model.GeneralEnum;
+import cl.com.ripley.ripleyshop.general.model.GridSpaceDecoration;
+import cl.com.ripley.ripleyshop.general.model.UtilHelper;
 import cl.com.ripley.ripleyshop.home.model.HomeProduct;
+import cl.com.ripley.ripleyshop.home.view.adapter.PublicationAdapter;
 
 public class CartFragment extends Fragment implements ManageCart.ViewCart {
 
@@ -33,6 +40,10 @@ public class CartFragment extends Fragment implements ManageCart.ViewCart {
     TextView text;
     @BindView(R.id.conslay_with_elements)
     ConstraintLayout constraintLayoutElements;
+    @BindView(R.id.recview_products)
+    RecyclerView products;
+
+    private ProductAdapter productAdapter;
 
     public CartFragment(){
         mManageCart = new ManageCartPresenter(this, getContext());
@@ -53,10 +64,24 @@ public class CartFragment extends Fragment implements ManageCart.ViewCart {
 
     }
 
+    /**
+     * Método que crea el Recyclerview en forma de dos columnas
+     */
+    private void creatingRecyclerView(List<HomeProduct> homeProductList){
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(), 1);
+        products.setLayoutManager(mLayoutManager);
+        productAdapter = new ProductAdapter(homeProductList,getContext());
+        products.setItemAnimator(new DefaultItemAnimator());
+        products.setAdapter(productAdapter);
+    }
+
     @Override
     public void setCartProducts(List<HomeProduct> homeProductList) {
         progressBar.setVisibility(android.view.View.GONE);
+        text.setVisibility(android.view.View.GONE);
+        image.setVisibility(android.view.View.GONE);
         constraintLayoutElements.setVisibility(android.view.View.VISIBLE);
+        creatingRecyclerView(homeProductList);
     }
 
     @Override
