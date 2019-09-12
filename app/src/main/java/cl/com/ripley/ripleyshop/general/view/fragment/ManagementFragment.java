@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import cl.com.ripley.ripleyshop.R;
+import cl.com.ripley.ripleyshop.home.view.activity.MainActivity;
 
 public class ManagementFragment {
 
@@ -25,5 +26,14 @@ public class ManagementFragment {
         transaction.addToBackStack(mTag);
         transaction.replace(FRAME_ID, mFragment, mTag);
         transaction.commitAllowingStateLoss();
+    }
+
+    /**
+     * Metodo que reinicia el backStack para que la proxima vez que se llame el onbackpress se dirija
+     * al fragment principal
+     * @param manager
+     */
+    public void backToInit(FragmentManager manager){
+        manager.popBackStack(MainActivity.TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 }

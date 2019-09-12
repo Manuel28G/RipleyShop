@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity
     private HomePresenter homePresenter;
     private ActionBarDrawerToggle toggle;
     private boolean mToolBarNavigationListenerIsRegistered = false;
-    public final String TAG = MainActivity.class.toString();
+    public static final String TAG = MainActivity.class.toString();
     private static boolean sIsCartInterface;
     private static int sCountJumps;
 
@@ -118,6 +118,8 @@ public class MainActivity extends AppCompatActivity
             toggle.setDrawerIndicatorEnabled(false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 toggle.setToolbarNavigationClickListener(v -> {
+                    if(!isbackAction)
+                        ManagementFragment.getInstance().backToInit(getSupportFragmentManager());
                     onBackPressed();
                 });
                 mToolBarNavigationListenerIsRegistered = true;

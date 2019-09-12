@@ -41,7 +41,7 @@
         style="@style/SpecificationTitle"/>
 
     <include
-        android:visibility="gone"
+        android:visibility="invisible"
         android:id="@+id/conslay_with_elements"
         layout="@layout/fragment_cart_with_item"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
