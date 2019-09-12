@@ -16,17 +16,22 @@
     <!-- Error message-->
     <string name="error_ep_sku">Error de conexión</string>
     <string name="error_ep_products">Error de conexión</string>
+    <string name="category">Categorias</string>
+     <!--Menu lateral-->
+    <string name="menu_technology">Tecno</string>
+    <string name="menu_electronic">Electro</string>
+    <string name="menu_furniture_and_home">Muebles y hogar</string>
+    <string name="menu_woman_fashion">Moda mujer</string>
+    <string name="menu_sport_and_adventure">Deporte y aventura</string>
+    <string name="filters">Filtros</string>
     <!--Detail publication-->
     <string name="specifications">Especificaciones</string>
     <string name="add_button">agregar a la bolsa</string>
     <!--Shoping Cart-->
     <string name="empty_cart">Tu bolsa está vacía</string>
     <string name="title_cart">Mi bolsa</string>
-
-
     <string name="add_error">Error agregando producto</string>
     <string name="add_sucess">Producto agregado</string>
-
     <string name="products">productos</string>
     <string name="product">producto</string>
     <string name="buy">comprar</string>

@@ -16,6 +16,10 @@
         <item name="android:fontFamily">@font/barlow_bold</item>\>
         <item name="android:textColor">@color/priceAccent</item>
     </style>
+    <style name="MenuTitle">
+        <item name="android:fontFamily">@font/barlow_bold</item>\>
+        <item name="android:textColor">@color/black</item>
+    </style>
     <style name="ProductDetail">
         <item name="android:fontFamily">@font/barlow_regular</item>\>
         <item name="android:textColor">@color/black</item>

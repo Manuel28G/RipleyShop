@@ -1,32 +1,24 @@
 package cl.com.ripley.ripleyshop.home.view.activity;
 
 import android.os.Bundle;
-
 import android.view.View;
-
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-
 import android.view.MenuItem;
-
 import com.google.android.material.navigation.NavigationView;
-
 import androidx.drawerlayout.widget.DrawerLayout;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.Menu;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -63,7 +55,6 @@ public class MainActivity extends AppCompatActivity
 
     private HomePresenter homePresenter;
     private ActionBarDrawerToggle toggle;
-    private boolean mToolBarNavigationListenerIsRegistered = false;
     public static final String TAG = MainActivity.class.toString();
     private static int sCountJumps;
 
@@ -125,7 +116,6 @@ public class MainActivity extends AppCompatActivity
                     else
                         onBackPressed();
                 });
-                mToolBarNavigationListenerIsRegistered = true;
                 ripleyIcon.setVisibility(View.INVISIBLE);
                 if(isbackAction) {
                     sCountJumps ++;
@@ -144,7 +134,6 @@ public class MainActivity extends AppCompatActivity
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                 toggle.setDrawerIndicatorEnabled(true);
                 toggle.setToolbarNavigationClickListener(null);
-                mToolBarNavigationListenerIsRegistered = false;
                 ripleyIcon.setVisibility(View.VISIBLE);
                 toolbar.setNavigationIcon(R.drawable.ic_options_menu);
             }
@@ -152,6 +141,10 @@ public class MainActivity extends AppCompatActivity
                 toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
             }
         }
+    }
+
+    private void filterData(){
+
     }
 
     @OnClick(R.id.conslay_icon_shop)
@@ -172,6 +165,20 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_main_drawer, menu);
+        int[] idFilters = {R.id.nav_techn,
+                R.id.nav_electronic,
+                R.id.nav_furniture_home,
+                R.id.nav_sport_adventure,
+                R.id.nav_woman_fashion};
+        for(int id : idFilters) {
+            ((CheckBox) menu.findItem(id).getActionView())
+                    .setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    filterData();
+                }
+            });
+        }
 
         return true;
     }
@@ -186,18 +193,23 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public boolean onNavigateUp() {
+        return super.onNavigateUp();
+    }
+
+    @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.nav_home) {
-        } else if (id == R.id.nav_gallery) {
 
-        } else if (id == R.id.nav_slideshow) {
+        if (id == R.id.nav_techn) {
+            // Handle the camera action
+        } else if (id == R.id.nav_electronic) {
 
-        } else if (id == R.id.nav_tools) {
+        } else if (id == R.id.nav_furniture_home) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_woman_fashion) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_sport_adventure) {
 
         }
         drawer.closeDrawer(GravityCompat.START);
