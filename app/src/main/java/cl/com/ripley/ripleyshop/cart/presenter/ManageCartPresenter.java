@@ -28,6 +28,7 @@ ManageCart.AddCartProduct {
     public ManageCartPresenter(ViewCart viewCart, Context context){
         mViewCart = viewCart;
         getCartProducts = new GetCartProducts(this);
+        payCartProduct = new cl.com.ripley.ripleyshop.cart.Interactor.PayCartProduct(this);
     }
 
     public void addProductToCart(HomeProduct homeProduct){
@@ -38,7 +39,6 @@ ManageCart.AddCartProduct {
     public ManageCartPresenter(AddPublication addPublication, Context context){
         mAddPublication = addPublication;
         addCartProductsInteractor = new cl.com.ripley.ripleyshop.cart.Interactor.AddCartProduct(this);
-        payCartProduct = new cl.com.ripley.ripleyshop.cart.Interactor.PayCartProduct(this);
     }
 
     /**
@@ -75,7 +75,7 @@ ManageCart.AddCartProduct {
 
     @Override
     public void paySucess() {
-
+        mViewCart.showPaySucess();
     }
 
     @Override

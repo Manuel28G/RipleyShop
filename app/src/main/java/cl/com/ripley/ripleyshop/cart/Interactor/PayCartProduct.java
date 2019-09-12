@@ -27,6 +27,7 @@ public class PayCartProduct implements GeneralInteractor {
 
     @Override
     public void run() {
+        ProductsInMemory.getInstance().payAction();
         mPayCartProduct.paySucess();
     }
 }

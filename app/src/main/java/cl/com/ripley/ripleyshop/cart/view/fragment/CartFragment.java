@@ -3,6 +3,7 @@ package cl.com.ripley.ripleyshop.cart.view.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -114,11 +115,17 @@ public class CartFragment extends Fragment implements ManageCart.ViewCart {
         progressBar.setVisibility(android.view.View.GONE);
         text.setVisibility(android.view.View.VISIBLE);
         image.setVisibility(android.view.View.VISIBLE);
+        image.setImageResource(R.drawable.ic_shop_bag_empty);
+        text.setText(getContext().getResources().getString(R.string.empty_cart));
     }
 
     @Override
     public void showPaySucess() {
-        
+        constraintLayoutElements.setVisibility(View.GONE);
+        text.setVisibility(android.view.View.VISIBLE);
+        image.setVisibility(android.view.View.VISIBLE);
+        image.setImageResource(R.drawable.ic_buy_sucess);
+        text.setText(getContext().getResources().getString(R.string.buy_sucess));
     }
 
     @Override
