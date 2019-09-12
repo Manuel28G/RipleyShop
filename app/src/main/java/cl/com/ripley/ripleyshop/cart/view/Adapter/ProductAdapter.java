@@ -33,6 +33,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         mHomeProduct.add(product);
     }
 
+    /**
+     * Retorna la lista de elementos que fueron seleccionados por el cliente
+     * @return lista de productos que el cliente quiere comprar {List<HomeProduct>}
+     */
+    public List<HomeProduct> getElemntList(){
+        return mHomeProduct;
+    }
+
     public void addCollection(List<HomeProduct> homeProductList){
         mHomeProduct.addAll(homeProductList);
     }
