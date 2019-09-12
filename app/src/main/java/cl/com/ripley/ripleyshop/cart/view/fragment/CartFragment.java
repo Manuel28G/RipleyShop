@@ -20,6 +20,7 @@ import java.util.UUID;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Optional;
 import cl.com.ripley.ripleyshop.R;
 import cl.com.ripley.ripleyshop.cart.presenter.ManageCart;
 import cl.com.ripley.ripleyshop.cart.presenter.ManageCartPresenter;
@@ -51,8 +52,7 @@ public class CartFragment extends Fragment implements ManageCart.ViewCart {
     TextView totalPrice;
     private Context mContext;
 
-    @BindView(R.id.bt_action)
-    Button payButton;
+    private android.view.View mView;
 
     public CartFragment(Context context){
         mManageCart = new ManageCartPresenter(this, getContext());
@@ -62,11 +62,10 @@ public class CartFragment extends Fragment implements ManageCart.ViewCart {
     @Nullable
     @Override
     public android.view.View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        android.view.View view = inflater.inflate(R.layout.fragment_cart,container,false);
-        ButterKnife.bind(this,view);
+        mView = inflater.inflate(R.layout.fragment_cart,container,false);
+        ButterKnife.bind(this,mView);
         mManageCart.getCartProducts(UUID.randomUUID()) ;
-        payButton.setText(getContext().getResources().getString(R.string.buy));
-        return view;
+        return mView;
     }
 
 
@@ -105,6 +104,11 @@ public class CartFragment extends Fragment implements ManageCart.ViewCart {
         creatingRecyclerView(homeProductList);
     }
 
+    @OnClick(R.id.bt_buy)
+    public void onClickBuy(){
+        mManageCart.buyAction(productAdapter.getElemntList(),UUID.randomUUID());
+    }
+
     @Override
     public void noProducts() {
         progressBar.setVisibility(android.view.View.GONE);
@@ -112,14 +116,9 @@ public class CartFragment extends Fragment implements ManageCart.ViewCart {
         image.setVisibility(android.view.View.VISIBLE);
     }
 
-    @OnClick(R.id.bt_action)
-    public void onClickBuy(){
-
-    }
-
     @Override
     public void showPaySucess() {
-
+        
     }
 
     @Override
