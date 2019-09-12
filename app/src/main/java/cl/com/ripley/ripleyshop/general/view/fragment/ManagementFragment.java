@@ -34,6 +34,8 @@ public class ManagementFragment {
      * @param manager
      */
     public void backToInit(FragmentManager manager){
-        manager.popBackStack(MainActivity.TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        for(int i = 0; i < manager.getBackStackEntryCount() ; ++i) {
+            manager.popBackStack();
+        }
     }
 }

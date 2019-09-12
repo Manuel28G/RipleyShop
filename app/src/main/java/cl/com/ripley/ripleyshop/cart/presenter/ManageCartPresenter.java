@@ -7,7 +7,9 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import cl.com.ripley.ripleyshop.cart.Interactor.GetCartProducts;
+import cl.com.ripley.ripleyshop.cart.Interactor.PayCartProduct;
 import cl.com.ripley.ripleyshop.general.model.UtilHelper;
 import cl.com.ripley.ripleyshop.home.model.HomeProduct;
 
@@ -21,10 +23,12 @@ ManageCart.AddCartProduct {
     private cl.com.ripley.ripleyshop.cart.Interactor.AddCartProduct addCartProductsInteractor;
     private ViewCart mViewCart;
     private AddPublication mAddPublication;
+    private cl.com.ripley.ripleyshop.cart.Interactor.PayCartProduct payCartProduct;
 
     public ManageCartPresenter(ViewCart viewCart, Context context){
         mViewCart = viewCart;
         getCartProducts = new GetCartProducts(this);
+        payCartProduct = new cl.com.ripley.ripleyshop.cart.Interactor.PayCartProduct(this);
     }
 
     public void addProductToCart(HomeProduct homeProduct){
@@ -37,8 +41,18 @@ ManageCart.AddCartProduct {
         addCartProductsInteractor = new cl.com.ripley.ripleyshop.cart.Interactor.AddCartProduct(this);
     }
 
-    public void getCartProducts(){
+    /**
+     * Metodo para obtener los productos del carrito por usuario
+     * @param userId identificador unico del usuario {@link UUID}
+     */
+    public void getCartProducts(UUID userId){
+        getCartProducts.setUUID(userId);
         getCartProducts.run();
+    }
+
+    public void buyAction(List<HomeProduct> products,UUID userId){
+        payCartProduct.setListOfProducts(products,userId);
+        payCartProduct.run();
     }
 
     @Override
@@ -61,7 +75,7 @@ ManageCart.AddCartProduct {
 
     @Override
     public void paySucess() {
-
+        mViewCart.showPaySucess();
     }
 
     @Override

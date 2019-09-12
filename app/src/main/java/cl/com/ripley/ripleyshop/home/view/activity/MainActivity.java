@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity
     private ActionBarDrawerToggle toggle;
     private boolean mToolBarNavigationListenerIsRegistered = false;
     public static final String TAG = MainActivity.class.toString();
-    private static boolean sIsCartInterface;
     private static int sCountJumps;
 
     @Override
@@ -118,9 +117,13 @@ public class MainActivity extends AppCompatActivity
             toggle.setDrawerIndicatorEnabled(false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 toggle.setToolbarNavigationClickListener(v -> {
-                    if(!isbackAction)
+                    if(!isbackAction) {
                         ManagementFragment.getInstance().backToInit(getSupportFragmentManager());
-                    onBackPressed();
+                        sCountJumps = 1;
+                        enableViews(false,false,false);
+                    }
+                    else
+                        onBackPressed();
                 });
                 mToolBarNavigationListenerIsRegistered = true;
                 ripleyIcon.setVisibility(View.INVISIBLE);
@@ -151,13 +154,10 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @OnClick(R.id.imgview_icon_shop)
+    @OnClick(R.id.conslay_icon_shop)
     public void onClickCart(){
-        if(!sIsCartInterface){
-            sIsCartInterface = true;
             ManagementFragment.getInstance().replaceFragment(new CartFragment(this),TAG,getSupportFragmentManager());
             enableViews(true,false,true);
-        }
     }
 
     @Override
@@ -166,7 +166,6 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             enableViews(false,false,false);
-            sIsCartInterface = false;
             super.onBackPressed();
         }
     }
