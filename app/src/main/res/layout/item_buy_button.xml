@@ -10,7 +10,7 @@
     android:backgroundTint="@color/addButton"
     android:fontFamily="@font/barlow_bold"
     android:orientation="vertical"
-    android:text="@string/add_button"
+    android:text="@string/buy"
     android:textAllCaps="false"
     android:textColor="@color/gray"
     android:textSize="14dp">

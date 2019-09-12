@@ -1,38 +1,42 @@
 package cl.com.ripley.ripleyshop.product.view.fragment;
 
+import android.app.Activity;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestFutureTarget;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.synnapps.carouselview.CarouselView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cl.com.ripley.ripleyshop.R;
+import cl.com.ripley.ripleyshop.cart.presenter.ManageCart;
+import cl.com.ripley.ripleyshop.cart.presenter.ManageCartPresenter;
+import cl.com.ripley.ripleyshop.cart.view.fragment.CartFragment;
 import cl.com.ripley.ripleyshop.general.model.UtilHelper;
+import cl.com.ripley.ripleyshop.general.view.fragment.ManagementFragment;
 import cl.com.ripley.ripleyshop.home.model.HomeProduct;
+import cl.com.ripley.ripleyshop.home.view.activity.MainActivity;
 import cl.com.ripley.ripleyshop.product.view.adapter.InformationAdapter;
 import static cl.com.ripley.ripleyshop.general.model.Constants.HTTPS;
 import static cl.com.ripley.ripleyshop.general.model.Constants.PUBLICATION_ID;
 
-public class ProductDetailFragment extends Fragment {
+public class ProductDetailFragment extends Fragment implements ManageCart.AddPublication {
 
 
     @BindView(R.id.carouselView)
@@ -49,6 +53,8 @@ public class ProductDetailFragment extends Fragment {
     private InformationAdapter mInformationAdapter;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
+    private ManageCartPresenter presenter;
+    private final String TAG = ProductDetailFragment.class.toString();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,6 +68,7 @@ public class ProductDetailFragment extends Fragment {
         String tmp = getArguments().getString(PUBLICATION_ID);
         mProduct = UtilHelper.parseJsonToObject(tmp, HomeProduct.class);
         ButterKnife.bind(this, view);
+        presenter = new ManageCartPresenter(this,getContext());
         setRecyclerView();
         setInformation();
         return view;
@@ -77,7 +84,7 @@ public class ProductDetailFragment extends Fragment {
     private void setInformation(){
         title.setText(mProduct.getName());
         ripleyPrice.setText(mProduct.getPrices().getFormattedOfferPrice());
-        totalPrice.setPaintFlags(totalPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        UtilHelper.strikeText(totalPrice);
         totalPrice.setText(mProduct.getPrices().getFormattedListPrice());
         carouselView.setPageCount(mProduct.getImages().length);
         carouselView.setImageListener((position, imageView) ->
@@ -101,4 +108,20 @@ public class ProductDetailFragment extends Fragment {
                         .into(imageView));
     }
 
+    @OnClick(R.id.bt_add_to_cart)
+    public void onClickAddToCar(){
+        presenter.addProductToCart(mProduct);
+        ((MainActivity)getActivity()).enableViews(true,false,true);
+    }
+
+    @Override
+    public void showErrorMessage() {
+        Toast.makeText(getContext(),getResources().getString(R.string.add_error),Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showSucessMessage() {
+        Toast.makeText(getContext(),getResources().getString(R.string.add_sucess),Toast.LENGTH_SHORT).show();
+        ManagementFragment.getInstance().replaceFragment(new CartFragment(getContext()),TAG,getFragmentManager());
+    }
 }

@@ -2,19 +2,25 @@ package cl.com.ripley.ripleyshop.general.model;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Paint;
 import android.util.Log;
 import android.util.TypedValue;
+import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.text.DecimalFormat;
 
+import cl.com.ripley.ripleyshop.R;
 public class UtilHelper {
 
     private static final String TAG = UtilHelper.class.toString();
     private static final Gson sGson = new GsonBuilder().create();
+    private static final String PATTERN_NUMBER = "#,###";
+    private static DecimalFormat sDecimalFormat = new DecimalFormat(PATTERN_NUMBER);
 
     /**
      * Metodo que retorna la lectura de un archivo en memoria desde la carpeta assets de android
@@ -80,5 +86,39 @@ public class UtilHelper {
                 return null;
             }
         };
+    }
+
+    /**
+     * Metodo que retorna un numero en formato ##.##,###
+     * @param number numero que se desea transformar {int}
+     * @return numbero transformado al formato establecido {String}
+     */
+    public static String getFormmated(int number){
+        return sDecimalFormat.format(number).replace(",",".");
+    }
+
+    /**
+     * Metodo utilizado para tachar el texto contenido en un textview
+     * @param textView Textview que se desea aplicar el tachado
+     */
+    public static void strikeText(TextView textView){
+        textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+    }
+
+    /**
+     * Metodo para crear el texto (singularo o plural) para mostrar en pantalla
+     * @param productCount cantidad de productos {int}
+     * @return cantidad de productos en String {String}
+     */
+    public static String countProduct(int productCount,String singleString,String pluralString){
+        String detailTitle = Integer.toString(productCount);
+        if(productCount == 1){
+            detailTitle += " "+ singleString;
+        }
+        else
+        {
+            detailTitle += " "+ pluralString;
+        }
+        return detailTitle;
     }
 }

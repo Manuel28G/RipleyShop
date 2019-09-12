@@ -20,7 +20,6 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
@@ -88,7 +87,7 @@ public class PublicationAdapter extends RecyclerView.Adapter<PublicationAdapter.
 
         holder.price.setText(product.getPrices().getFormattedOfferPrice());
         holder.oldPrice.setText(product.getPrices().getFormattedListPrice());
-        holder.oldPrice.setPaintFlags(holder.oldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        UtilHelper.strikeText(holder.oldPrice);
         holder.title.setText(product.getName());
         holder.product = product;
         holder.moreAction();
@@ -144,7 +143,7 @@ public class PublicationAdapter extends RecyclerView.Adapter<PublicationAdapter.
             args.putString(PUBLICATION_ID, UtilHelper.parseObjectToJsonString(product));
             fragment.setArguments(args);
             ManagementFragment.getInstance().replaceFragment(fragment,TAG,mManager);
-            ((MainActivity)mContext).enableViews(true);
+            ((MainActivity)mContext).enableViews(true,true,false);
         }
 
     }

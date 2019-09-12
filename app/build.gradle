@@ -48,7 +48,4 @@ dependencies {
     implementation 'com.synnapps:carouselview:0.1.6'
     // Libreria para parsear objetos
     implementation 'com.google.code.gson:gson:2.8.5'
-
-
-
 }
