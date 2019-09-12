@@ -9,7 +9,7 @@
             <item
                 android:id="@+id/nav_techn"
                 android:title="@string/menu_technology"
-                app:actionViewClass="android.widget.CheckBox" />
+                app:actionViewClass="android.widget.CheckBox"/>
             <item
                 android:id="@+id/nav_electronic"
                 android:title="@string/menu_electronic"
@@ -17,15 +17,21 @@
             <item
                 android:id="@+id/nav_furniture_home"
                 android:title="@string/menu_furniture_and_home"
-                app:actionViewClass="android.widget.CheckBox"/>
+                app:actionViewClass="android.widget.CheckBox"
+                android:checkableBehavior="single"
+                app:showAsAction="ifRoom"/>
             <item
                 android:id="@+id/nav_woman_fashion"
                 android:title="@string/menu_woman_fashion"
-                app:actionViewClass="android.widget.CheckBox" />
+                app:actionViewClass="android.widget.CheckBox"
+                android:checkableBehavior="single"
+                app:showAsAction="ifRoom"/>
             <item
                 android:id="@+id/nav_sport_adventure"
                 android:title="@string/menu_sport_and_adventure"
-                app:actionViewClass="android.widget.CheckBox"/>
+                app:actionViewClass="android.widget.CheckBox"
+                android:checkableBehavior="single"
+                app:showAsAction="ifRoom"/>
 
         </menu>
     </item>

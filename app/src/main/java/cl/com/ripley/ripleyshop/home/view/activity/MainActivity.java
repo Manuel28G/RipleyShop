@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.Menu;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -142,6 +143,10 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    private void filterData(){
+
+    }
+
     @OnClick(R.id.conslay_icon_shop)
     public void onClickCart(){
             ManagementFragment.getInstance().replaceFragment(new CartFragment(this),TAG,getSupportFragmentManager());
@@ -160,6 +165,20 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_main_drawer, menu);
+        int[] idFilters = {R.id.nav_techn,
+                R.id.nav_electronic,
+                R.id.nav_furniture_home,
+                R.id.nav_sport_adventure,
+                R.id.nav_woman_fashion};
+        for(int id : idFilters) {
+            ((CheckBox) menu.findItem(id).getActionView())
+                    .setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    filterData();
+                }
+            });
+        }
 
         return true;
     }
@@ -171,6 +190,11 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onNavigateUp() {
+        return super.onNavigateUp();
     }
 
     @Override
