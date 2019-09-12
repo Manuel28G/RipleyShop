@@ -1,9 +1,7 @@
 package cl.com.ripley.ripleyshop.home.view.activity;
 
 import android.os.Bundle;
-
 import android.view.View;
-
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
@@ -56,7 +54,6 @@ public class MainActivity extends AppCompatActivity
 
     private HomePresenter homePresenter;
     private ActionBarDrawerToggle toggle;
-    private boolean mToolBarNavigationListenerIsRegistered = false;
     public static final String TAG = MainActivity.class.toString();
     private static int sCountJumps;
 
