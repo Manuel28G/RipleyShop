@@ -6,19 +6,17 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-
+    <!--Side menu items-->
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
-
+    <!-- Error message-->
     <string name="error_ep_sku">Error de conexión</string>
     <string name="error_ep_products">Error de conexión</string>
-
     <string name="category">Categorias</string>
-
      <!--Menu lateral-->
     <string name="menu_technology">Tecno</string>
     <string name="menu_electronic">Electro</string>
@@ -26,4 +24,15 @@
     <string name="menu_woman_fashion">Moda mujer</string>
     <string name="menu_sport_and_adventure">Deporte y aventura</string>
     <string name="filters">Filtros</string>
+    <!--Detail publication-->
+    <string name="specifications">Especificaciones</string>
+    <string name="add_button">agregar a la bolsa</string>
+    <!--Shoping Cart-->
+    <string name="empty_cart">Tu bolsa está vacía</string>
+    <string name="title_cart">Mi bolsa</string>
+    <string name="add_error">Error agregando producto</string>
+    <string name="add_sucess">Producto agregado</string>
+    <string name="products">productos</string>
+    <string name="product">producto</string>
+    <string name="buy">comprar</string>
 </resources>

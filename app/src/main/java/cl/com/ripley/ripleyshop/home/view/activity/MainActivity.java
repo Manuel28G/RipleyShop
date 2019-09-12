@@ -2,9 +2,6 @@ package cl.com.ripley.ripleyshop.home.view.activity;
 
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import android.view.View;
 
 import androidx.core.view.GravityCompat;
@@ -23,22 +20,25 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
-import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cl.com.ripley.ripleyshop.R;
+import cl.com.ripley.ripleyshop.cart.view.fragment.CartFragment;
 import cl.com.ripley.ripleyshop.general.model.GridSpaceDecoration;
 import cl.com.ripley.ripleyshop.general.model.UtilHelper;
+import cl.com.ripley.ripleyshop.general.view.fragment.ManagementFragment;
 import cl.com.ripley.ripleyshop.home.model.HomeProduct;
 import cl.com.ripley.ripleyshop.home.presenter.Home;
 import cl.com.ripley.ripleyshop.home.presenter.HomePresenter;
 import cl.com.ripley.ripleyshop.home.view.adapter.PublicationAdapter;
-
-import static java.security.AccessController.getContext;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener , Home.View{
@@ -51,10 +51,22 @@ public class MainActivity extends AppCompatActivity
     Toolbar toolbar;
     @BindView(R.id.cardview_home)
     RecyclerView myRecyclerView;
-
+    @BindView(R.id.imgview_letter_ripley)
+    ImageView ripleyIcon;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
+    @BindView(R.id.imgview_icon_shop)
+    ImageView imgViewCart;
+    @BindView(R.id.txtview_title)
+    TextView titleMenu;
     private PublicationAdapter publicationAdapter;
 
     private HomePresenter homePresenter;
+    private ActionBarDrawerToggle toggle;
+    private boolean mToolBarNavigationListenerIsRegistered = false;
+    public static final String TAG = MainActivity.class.toString();
+    private static boolean sIsCartInterface;
+    private static int sCountJumps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,23 +74,90 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         creatingRecyclerView();
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        titleMenu.setText(getResources().getString(R.string.title_cart));
+        sCountJumps = 1;
+        toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        toolbar.setNavigationIcon(R.drawable.ic_options_menu);
+        enableViews(false,true,false);
         navigationView.setNavigationItemSelectedListener(this);
         homePresenter = new HomePresenter(getApplicationContext(),this);
         homePresenter.getItems();
     }
 
+    /**
+     * Método que crea el Recyclerview en forma de dos columnas
+     */
     private void creatingRecyclerView(){
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
         myRecyclerView.setLayoutManager(mLayoutManager);
-        publicationAdapter = new PublicationAdapter(getApplicationContext());
+        publicationAdapter = new PublicationAdapter(this, getSupportFragmentManager());
         myRecyclerView.setItemAnimator(new DefaultItemAnimator());
         myRecyclerView.addItemDecoration(new GridSpaceDecoration(2, UtilHelper.dpToPx(10,getResources()), true));
         myRecyclerView.setAdapter(publicationAdapter);
+    }
+
+    /**
+     * Metodo que cambia el menú superior cambiando la opcion lateral por un back
+     * @param enable true: coloca la opcion de regresar en el menu superior, false: coloca la opción del menú lateral
+     */
+    public void enableViews(boolean enable,boolean isbackAction, boolean isCartSection) {
+
+        if(isCartSection){
+            imgViewCart.setVisibility(View.GONE);
+        }
+        else {
+            imgViewCart.setVisibility(View.VISIBLE);
+        }
+
+        if(enable) {
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            toggle.setDrawerIndicatorEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                toggle.setToolbarNavigationClickListener(v -> {
+                    if(!isbackAction)
+                        ManagementFragment.getInstance().backToInit(getSupportFragmentManager());
+                    onBackPressed();
+                });
+                mToolBarNavigationListenerIsRegistered = true;
+                ripleyIcon.setVisibility(View.INVISIBLE);
+                if(isbackAction) {
+                    sCountJumps ++;
+                    toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+                }
+                else{
+                    sCountJumps ++;
+                    titleMenu.setVisibility(View.VISIBLE);
+                    toolbar.setNavigationIcon(R.drawable.ic_expand_close);
+                }
+        } else {
+            sCountJumps--;
+            titleMenu.setVisibility(View.GONE);
+            if(sCountJumps == 0) {
+                drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                toggle.setDrawerIndicatorEnabled(true);
+                toggle.setToolbarNavigationClickListener(null);
+                mToolBarNavigationListenerIsRegistered = false;
+                ripleyIcon.setVisibility(View.VISIBLE);
+                toolbar.setNavigationIcon(R.drawable.ic_options_menu);
+            }
+            else{
+                toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+            }
+        }
+    }
+
+    @OnClick(R.id.imgview_icon_shop)
+    public void onClickCart(){
+        if(!sIsCartInterface){
+            sIsCartInterface = true;
+            ManagementFragment.getInstance().replaceFragment(new CartFragment(this),TAG,getSupportFragmentManager());
+            enableViews(true,false,true);
+        }
     }
 
     @Override
@@ -86,36 +165,29 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            enableViews(false,false,false);
+            sIsCartInterface = false;
             super.onBackPressed();
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_techn) {
@@ -129,13 +201,13 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_sport_adventure) {
 
         }
-
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
     @Override
     public void addProducts(List<HomeProduct> products) {
+        progressBar.setVisibility(View.GONE);
         publicationAdapter.addProducts(products);
         publicationAdapter.notifyDataSetChanged();
     }

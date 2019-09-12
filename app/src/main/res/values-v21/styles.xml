@@ -20,4 +20,14 @@
         <item name="android:fontFamily">@font/barlow_bold</item>\>
         <item name="android:textColor">@color/black</item>
     </style>
+    <style name="ProductDetail">
+        <item name="android:fontFamily">@font/barlow_regular</item>\>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+    <style name="SpecificationTitle">
+        <item name="android:fontFamily">@font/barlow_bold</item>\>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">18dp</item>
+    </style>
 </resources>

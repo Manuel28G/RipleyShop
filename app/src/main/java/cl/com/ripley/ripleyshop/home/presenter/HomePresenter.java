@@ -32,7 +32,8 @@ public class HomePresenter implements Home.Presenter {
         }
         if(!sku.isEmpty())
             sku = sku.substring(1);
-        homeItemInteractor.getItemsInformation(sku);
+        homeItemInteractor.setSKU(sku);
+        homeItemInteractor.run();
     }
 
     @Override

@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+import butterknife.BindView;
+import cl.com.ripley.ripleyshop.general.model.ProductAttributes;
+
 public class HomeProduct {
 
     @SerializedName("uniqueID")
@@ -16,11 +19,44 @@ public class HomeProduct {
     private String mThumbnailImage;
     @SerializedName("prices")
     private Price mPrices;
+    @SerializedName("attributes")
+    private List<ProductAttributes> mAtributes;
+    @SerializedName("images")
+    private String[] mImages;
+    @SerializedName("partNumber")
+    private String mPartNumber;
+
+    private int countProduct;
 
     public HomeProduct(){
-
+        countProduct = 0;
     }
 
+    public int getProductCount(){
+        return countProduct;
+    }
+
+    public void addProduct(){
+        countProduct ++;
+    }
+
+    public void removeProduct(){
+        countProduct--;
+    }
+
+    public String getPartNumber(){
+        return mPartNumber;
+    }
+
+    public String[] getImages(){
+        return mImages;
+    }
+    public String getImage(int position){
+        return mImages[position];
+    }
+    public List<ProductAttributes> getAtributes(){
+        return mAtributes;
+    }
     public String getUniqueID() {
         return mUniqueID;
     }
