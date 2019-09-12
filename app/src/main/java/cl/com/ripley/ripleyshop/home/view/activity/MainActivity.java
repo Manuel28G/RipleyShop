@@ -115,7 +115,6 @@ public class MainActivity extends AppCompatActivity
                     else
                         onBackPressed();
                 });
-                mToolBarNavigationListenerIsRegistered = true;
                 ripleyIcon.setVisibility(View.INVISIBLE);
                 if(isbackAction) {
                     sCountJumps ++;
@@ -134,7 +133,6 @@ public class MainActivity extends AppCompatActivity
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                 toggle.setDrawerIndicatorEnabled(true);
                 toggle.setToolbarNavigationClickListener(null);
-                mToolBarNavigationListenerIsRegistered = false;
                 ripleyIcon.setVisibility(View.VISIBLE);
                 toolbar.setNavigationIcon(R.drawable.ic_options_menu);
             }
