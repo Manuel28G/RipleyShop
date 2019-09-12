@@ -1,12 +1,12 @@
 package cl.com.ripley.ripleyshop.cart.view.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,10 +22,8 @@ import cl.com.ripley.ripleyshop.cart.presenter.ManageCart;
 import cl.com.ripley.ripleyshop.cart.presenter.ManageCartPresenter;
 import cl.com.ripley.ripleyshop.cart.view.Adapter.ProductAdapter;
 import cl.com.ripley.ripleyshop.general.model.GeneralEnum;
-import cl.com.ripley.ripleyshop.general.model.GridSpaceDecoration;
 import cl.com.ripley.ripleyshop.general.model.UtilHelper;
 import cl.com.ripley.ripleyshop.home.model.HomeProduct;
-import cl.com.ripley.ripleyshop.home.view.adapter.PublicationAdapter;
 
 public class CartFragment extends Fragment implements ManageCart.ViewCart {
 
@@ -42,11 +39,18 @@ public class CartFragment extends Fragment implements ManageCart.ViewCart {
     ConstraintLayout constraintLayoutElements;
     @BindView(R.id.recview_products)
     RecyclerView products;
-
+    @BindView(R.id.txtview_detail_title)
+    TextView totalCountOfProduct;
     private ProductAdapter productAdapter;
+    @BindView(R.id.txtview_ripley_price)
+    TextView totalPriceRipley;
+    @BindView(R.id.txtview_total_price)
+    TextView totalPrice;
+    private Context mContext;
 
-    public CartFragment(){
+    public CartFragment(Context context){
         mManageCart = new ManageCartPresenter(this, getContext());
+        mContext = context;
     }
 
     @Nullable
@@ -73,6 +77,16 @@ public class CartFragment extends Fragment implements ManageCart.ViewCart {
         productAdapter = new ProductAdapter(homeProductList,getContext());
         products.setItemAnimator(new DefaultItemAnimator());
         products.setAdapter(productAdapter);
+        setTotalPrice();
+    }
+
+    private void setTotalPrice(){
+        totalCountOfProduct.setText(UtilHelper.countProduct(productAdapter.getTotalOfProducts(),
+                mContext.getResources().getString(R.string.product),
+                mContext.getResources().getString(R.string.products)));
+        UtilHelper.strikeText(totalPrice);
+        totalPrice.setText("$" + UtilHelper.getFormmated(productAdapter.getTotalPrice()));
+        totalPriceRipley.setText("$" + UtilHelper.getFormmated(productAdapter.getTotalRipleyPrice()));
     }
 
     @Override

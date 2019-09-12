@@ -84,7 +84,7 @@ public class ProductDetailFragment extends Fragment implements ManageCart.AddPub
     private void setInformation(){
         title.setText(mProduct.getName());
         ripleyPrice.setText(mProduct.getPrices().getFormattedOfferPrice());
-        totalPrice.setPaintFlags(totalPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        UtilHelper.strikeText(totalPrice);
         totalPrice.setText(mProduct.getPrices().getFormattedListPrice());
         carouselView.setPageCount(mProduct.getImages().length);
         carouselView.setImageListener((position, imageView) ->
@@ -122,6 +122,6 @@ public class ProductDetailFragment extends Fragment implements ManageCart.AddPub
     @Override
     public void showSucessMessage() {
         Toast.makeText(getContext(),getResources().getString(R.string.add_sucess),Toast.LENGTH_SHORT).show();
-        ManagementFragment.getInstance().replaceFragment(new CartFragment(),TAG,getFragmentManager());
+        ManagementFragment.getInstance().replaceFragment(new CartFragment(getContext()),TAG,getFragmentManager());
     }
 }

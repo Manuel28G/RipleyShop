@@ -87,7 +87,7 @@ public class PublicationAdapter extends RecyclerView.Adapter<PublicationAdapter.
 
         holder.price.setText(product.getPrices().getFormattedOfferPrice());
         holder.oldPrice.setText(product.getPrices().getFormattedListPrice());
-        holder.oldPrice.setPaintFlags(holder.oldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        UtilHelper.strikeText(holder.oldPrice);
         holder.title.setText(product.getName());
         holder.product = product;
         holder.moreAction();

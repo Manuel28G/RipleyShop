@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity
     public void onClickCart(){
         if(!sIsCartInterface){
             sIsCartInterface = true;
-            ManagementFragment.getInstance().replaceFragment(new CartFragment(),TAG,getSupportFragmentManager());
+            ManagementFragment.getInstance().replaceFragment(new CartFragment(this),TAG,getSupportFragmentManager());
             titleMenu.setText(getResources().getString(R.string.title_cart));
             enableViews(true,false,true);
         }

@@ -39,20 +39,42 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     }
 
     /**
-     * Metodo para crear el texto (singularo o plural) para mostrar en pantalla
-     * @param productCount cantidad de productos {int}
-     * @return cantidad de productos en String {String}
+     * Metodo que retorna el total del costo de todos los productos agregados al carrito
+     * @return entero que identifica el total de los productos agregados
      */
-    private String countProduct(int productCount){
-        String detailTitle = Integer.toString(productCount);
-        if(productCount == 1){
-            detailTitle += " "+ mContext.getResources().getString(R.string.product);
+    public int getTotalPrice(){
+        int totalPrice = 0;
+        for(HomeProduct tmp : mHomeProduct){
+            totalPrice +=(tmp.getPrices().getListPrice() * tmp.getProductCount());
         }
-        else
-        {
-            detailTitle += " "+ mContext.getResources().getString(R.string.products);
+        return totalPrice;
+    }
+
+    /**
+     * Metodo que retorna el valor total al pagar con una tarjeta ripley
+     * @return valor con descuento del total de todos los productos con tarjeta ripley
+     */
+    public int getTotalRipleyPrice(){
+        int totalRipleyPrice = 0;
+        for(HomeProduct tmp : mHomeProduct){
+            totalRipleyPrice +=tmp.getPrices().getOfferPrice() >0?
+                    tmp.getPrices().getOfferPrice()* tmp.getProductCount():
+                    tmp.getPrices().getListPrice() * tmp.getProductCount();
         }
-        return detailTitle;
+        return totalRipleyPrice;
+    }
+
+    /**
+     * Metodo que retorna el total de productos guardados en el carrito
+     * @return cantidad de productos guardados en el carrito {int}
+     */
+    public int getTotalOfProducts(){
+
+        int totalOfProducts = 0;
+        for(HomeProduct tmp : mHomeProduct){
+            totalOfProducts +=tmp.getProductCount();
+        }
+        return totalOfProducts;
     }
 
     @NonNull
@@ -66,11 +88,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         HomeProduct product= mHomeProduct.get(position);
         holder.ripleyPrice.setText("$" + UtilHelper.getFormmated(product.getPrices().getOfferPrice() * product.getProductCount()));
-        holder.totalPrice.setPaintFlags(holder.totalPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        UtilHelper.strikeText(holder.totalPrice);
         holder.totalPrice.setText("$" + UtilHelper.getFormmated(product.getPrices().getListPrice() * product.getProductCount()) );
         holder.description.setText(product.getPartNumber());
         holder.title.setText(product.getName());
-        holder.detailTitle.setText(countProduct(product.getProductCount()));
+        holder.detailTitle.setText(UtilHelper.countProduct(product.getProductCount(),
+                mContext.getResources().getString(R.string.product),
+                mContext.getResources().getString(R.string.products)));
         Glide.with(mContext).load(Constants.HTTPS +product.getThumbnailImage()).fitCenter().into(holder.image);
     }
 
