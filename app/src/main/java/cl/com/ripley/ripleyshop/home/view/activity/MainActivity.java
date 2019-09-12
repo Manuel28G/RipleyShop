@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity
         creatingRecyclerView();
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        titleMenu.setText(getResources().getString(R.string.title_cart));
         sCountJumps = 1;
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -153,7 +154,6 @@ public class MainActivity extends AppCompatActivity
         if(!sIsCartInterface){
             sIsCartInterface = true;
             ManagementFragment.getInstance().replaceFragment(new CartFragment(this),TAG,getSupportFragmentManager());
-            titleMenu.setText(getResources().getString(R.string.title_cart));
             enableViews(true,false,true);
         }
     }

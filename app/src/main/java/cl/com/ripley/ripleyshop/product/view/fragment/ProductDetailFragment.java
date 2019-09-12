@@ -111,7 +111,7 @@ public class ProductDetailFragment extends Fragment implements ManageCart.AddPub
     @OnClick(R.id.bt_add_to_cart)
     public void onClickAddToCar(){
         presenter.addProductToCart(mProduct);
-        ((MainActivity)getActivity()).enableViews(true,true,true);
+        ((MainActivity)getActivity()).enableViews(true,false,true);
     }
 
     @Override

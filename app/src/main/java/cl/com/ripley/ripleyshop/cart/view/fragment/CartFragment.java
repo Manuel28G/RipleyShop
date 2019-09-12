@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -15,8 +16,10 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
+import java.util.UUID;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cl.com.ripley.ripleyshop.R;
 import cl.com.ripley.ripleyshop.cart.presenter.ManageCart;
 import cl.com.ripley.ripleyshop.cart.presenter.ManageCartPresenter;
@@ -48,6 +51,9 @@ public class CartFragment extends Fragment implements ManageCart.ViewCart {
     TextView totalPrice;
     private Context mContext;
 
+    @BindView(R.id.bt_action)
+    Button payButton;
+
     public CartFragment(Context context){
         mManageCart = new ManageCartPresenter(this, getContext());
         mContext = context;
@@ -58,7 +64,8 @@ public class CartFragment extends Fragment implements ManageCart.ViewCart {
     public android.view.View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         android.view.View view = inflater.inflate(R.layout.fragment_cart,container,false);
         ButterKnife.bind(this,view);
-        mManageCart.getCartProducts();
+        mManageCart.getCartProducts(UUID.randomUUID()) ;
+        payButton.setText(getContext().getResources().getString(R.string.buy));
         return view;
     }
 
@@ -103,6 +110,11 @@ public class CartFragment extends Fragment implements ManageCart.ViewCart {
         progressBar.setVisibility(android.view.View.GONE);
         text.setVisibility(android.view.View.VISIBLE);
         image.setVisibility(android.view.View.VISIBLE);
+    }
+
+    @OnClick(R.id.bt_action)
+    public void onClickBuy(){
+
     }
 
     @Override
