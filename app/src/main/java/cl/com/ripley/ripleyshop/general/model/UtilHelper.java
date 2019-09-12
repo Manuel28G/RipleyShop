@@ -10,11 +10,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.text.DecimalFormat;
 
 public class UtilHelper {
 
     private static final String TAG = UtilHelper.class.toString();
     private static final Gson sGson = new GsonBuilder().create();
+    private static final String PATTERN_NUMBER = "#,###";
+    private static DecimalFormat sDecimalFormat = new DecimalFormat(PATTERN_NUMBER);
 
     /**
      * Metodo que retorna la lectura de un archivo en memoria desde la carpeta assets de android
@@ -80,5 +83,15 @@ public class UtilHelper {
                 return null;
             }
         };
+    }
+
+    /**
+     * Metodo que retorna un numero en formato ##.##,###
+     * @param number numero que se desea transformar {int}
+     * @return numbero transformado al formato establecido {String}
+     */
+    public static String getFormmated(int number){
+        return sDecimalFormat.format(number).replace(",",".");
+
     }
 }

@@ -26,4 +26,7 @@
 
     <string name="add_error">Error agregando producto</string>
     <string name="add_sucess">Producto agregado</string>
+
+    <string name="products">productos</string>
+    <string name="product">producto</string>
 </resources>
